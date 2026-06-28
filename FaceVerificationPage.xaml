@@ -1,0 +1,240 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FIRE.FaceVerificationPage"
+             Title="Verifikasi Wajah"
+             BackgroundColor="#F6F7F9">
+
+    <ScrollView>
+        <Grid Padding="{OnIdiom Phone='18,22', Default='32'}"
+              RowDefinitions="Auto,Auto"
+              RowSpacing="{OnIdiom Phone=18, Default=24}">
+
+            <!-- Header -->
+            <Grid Grid.Row="0"
+                  ColumnDefinitions="*,Auto"
+                  ColumnSpacing="12">
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Verifikasi Wajah"
+                           FontSize="{OnIdiom Phone=26, Default=30}"
+                           FontAttributes="Bold"
+                           TextColor="#1F2937" />
+
+                    <Label x:Name="LabelRole"
+                           Text="Pengguna: - • Hak akses: -"
+                           FontSize="{OnIdiom Phone=14, Default=15}"
+                           TextColor="#667085"
+                           LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+
+                <Border Grid.Column="1"
+                        BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="{OnIdiom Phone='14,8', Default='18,10'}"
+                        VerticalOptions="Start"
+                        StrokeShape="RoundRectangle 22">
+
+                    <HorizontalStackLayout Spacing="8">
+                        <ActivityIndicator x:Name="ScanIndicator"
+                                           IsRunning="False"
+                                           IsVisible="False"
+                                           WidthRequest="18"
+                                           HeightRequest="18"
+                                           Color="#1E3A5F" />
+
+                        <Label Text="LIVE"
+                               FontSize="{OnIdiom Phone=13, Default=14}"
+                               FontAttributes="Bold"
+                               TextColor="#1E3A5F"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Main Content -->
+            <Grid Grid.Row="1"
+                  ColumnDefinitions="{OnIdiom Phone='*', Default='1.25*,0.75*'}"
+                  RowDefinitions="{OnIdiom Phone='Auto,Auto', Default='*'}"
+                  ColumnSpacing="{OnIdiom Phone=0, Default=24}"
+                  RowSpacing="{OnIdiom Phone=18, Default=0}">
+
+                <!-- Camera Panel -->
+                <Border Grid.Column="0"
+                        Grid.Row="0"
+                        BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="{OnIdiom Phone=18, Default=28}"
+                        StrokeShape="RoundRectangle 22">
+
+                    <VerticalStackLayout Spacing="{OnIdiom Phone=14, Default=18}">
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Pemindaian Kamera"
+                                   FontSize="{OnIdiom Phone=22, Default=24}"
+                                   FontAttributes="Bold"
+                                   TextColor="#1F2937" />
+
+                            <Label Text="Pastikan wajah berada di tengah kamera dan pencahayaan cukup."
+                                   FontSize="{OnIdiom Phone=14, Default=16}"
+                                   TextColor="#667085"
+                                   LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+
+                        <!-- Preview Kamera -->
+                        <Border BackgroundColor="#0F172A"
+                                StrokeThickness="0"
+                                HeightRequest="{OnIdiom Phone=260, Default=360}"
+                                StrokeShape="RoundRectangle 18">
+
+                            <Grid>
+                                <Image x:Name="CameraPreview"
+                                       Aspect="AspectFill"
+                                       HeightRequest="{OnIdiom Phone=260, Default=360}" />
+
+                                <Border BackgroundColor="#CC020617"
+                                        StrokeThickness="0"
+                                        Padding="14"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="End"
+                                        Margin="0,0,0,18"
+                                        StrokeShape="RoundRectangle 14">
+
+                                    <Label x:Name="LabelSimilarity"
+                                           Text="Menunggu pemindaian wajah..."
+                                           TextColor="White"
+                                           FontSize="{OnIdiom Phone=13, Default=14}"
+                                           LineBreakMode="WordWrap"
+                                           HorizontalTextAlignment="Center" />
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <Label x:Name="LabelStatus"
+                               Text="Pemindaian berjalan otomatis. Tetap berada di depan kamera hingga proses selesai."
+                               FontSize="{OnIdiom Phone=13, Default=14}"
+                               TextColor="#667085"
+                               LineBreakMode="WordWrap" />
+
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="12">
+
+                            <Button Text="Mulai Scan"
+                                    HeightRequest="{OnIdiom Phone=46, Default=50}"
+                                    BackgroundColor="#1E3A5F"
+                                    TextColor="White"
+                                    FontAttributes="Bold"
+                                    CornerRadius="12"
+                                    Clicked="OnStartScanClicked" />
+
+                            <Button Grid.Column="1"
+                                    Text="Batal"
+                                    HeightRequest="{OnIdiom Phone=46, Default=50}"
+                                    BackgroundColor="White"
+                                    TextColor="#DC2626"
+                                    BorderColor="#E5E7EB"
+                                    BorderWidth="1"
+                                    CornerRadius="12"
+                                    Clicked="OnCancelClicked" />
+                        </Grid>
+
+                        <!-- Tombol khusus Android untuk testing -->
+                        <Button Text="Lanjut ke Dashboard Android"
+                                IsVisible="{OnIdiom Phone=True, Default=False}"
+                                HeightRequest="46"
+                                BackgroundColor="#F97316"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                CornerRadius="12"
+                                Clicked="OnSkipAndroidVerificationClicked" />
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Instruction Panel -->
+                <Border Grid.Column="{OnIdiom Phone=0, Default=1}"
+                        Grid.Row="{OnIdiom Phone=1, Default=0}"
+                        BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="{OnIdiom Phone=18, Default=28}"
+                        StrokeShape="RoundRectangle 22">
+
+                    <VerticalStackLayout Spacing="18">
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Instruksi"
+                                   FontSize="{OnIdiom Phone=22, Default=24}"
+                                   FontAttributes="Bold"
+                                   TextColor="#1F2937" />
+
+                            <Label Text="Ikuti instruksi berikut agar proses verifikasi berjalan lebih stabil."
+                                   FontSize="{OnIdiom Phone=14, Default=15}"
+                                   TextColor="#667085"
+                                   LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+
+                        <BoxView HeightRequest="1"
+                                 Color="#E5E7EB" />
+
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Label Text="1"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A5F" />
+
+                            <Label Grid.Column="1"
+                                   Text="Posisikan wajah lurus ke kamera."
+                                   FontSize="{OnIdiom Phone=14, Default=15}"
+                                   TextColor="#667085"
+                                   LineBreakMode="WordWrap" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Label Text="2"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A5F" />
+
+                            <Label Grid.Column="1"
+                                   Text="Hindari cahaya terlalu gelap atau terlalu terang."
+                                   FontSize="{OnIdiom Phone=14, Default=15}"
+                                   TextColor="#667085"
+                                   LineBreakMode="WordWrap" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Label Text="3"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A5F" />
+
+                            <Label Grid.Column="1"
+                                   Text="Pastikan hanya satu wajah berada di depan kamera."
+                                   FontSize="{OnIdiom Phone=14, Default=15}"
+                                   TextColor="#667085"
+                                   LineBreakMode="WordWrap" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Label Text="4"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A5F" />
+
+                            <Label Grid.Column="1"
+                                   Text="Untuk Android, live scan OpenCV belum aktif. Gunakan tombol lanjut sebagai mode pengujian."
+                                   FontSize="{OnIdiom Phone=14, Default=15}"
+                                   TextColor="#667085"
+                                   LineBreakMode="WordWrap" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </Grid>
+        </Grid>
+    </ScrollView>
+</ContentPage>
